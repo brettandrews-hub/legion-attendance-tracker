@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Spartan Legion | Live Attendance Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#454747",
+                      "surface-tint": "#326858",
+                      "outline-variant": "#c0c9c3",
+                      "tertiary": "#212323",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "error-container": "#ffdad6",
+                      "outline": "#707975",
+                      "on-surface": "#0b1c30",
+                      "primary-container": "#004032",
+                      "secondary-container": "#feb71a",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-high": "#dce9ff",
+                      "tertiary-container": "#363838",
+                      "surface-container-low": "#eff4ff",
+                      "on-error-container": "#93000a",
+                      "on-secondary-container": "#6b4b00",
+                      "primary-fixed-dim": "#9ad2be",
+                      "on-primary-fixed": "#002018",
+                      "surface-dim": "#cbdbf5",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#a0a1a1",
+                      "surface-variant": "#d3e4fe",
+                      "on-primary-container": "#76ac99",
+                      "inverse-surface": "#213145",
+                      "on-error": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "inverse-primary": "#9ad2be",
+                      "on-secondary-fixed": "#271900",
+                      "background": "#f8f9ff",
+                      "secondary-fixed-dim": "#ffba2c",
+                      "error": "#ba1a1a",
+                      "on-surface-variant": "#404945",
+                      "inverse-on-surface": "#eaf1ff",
+                      "secondary": "#7d5700",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#5f4100",
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-primary": "#ffffff",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#00281e",
+                      "primary-fixed": "#b6eeda",
+                      "secondary-fixed": "#ffdeaa",
+                      "surface-container": "#e5eeff",
+                      "surface": "#f8f9ff",
+                      "on-primary-fixed-variant": "#175041"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "lg": "40px",
+                      "md": "24px",
+                      "xl": "64px",
+                      "margin-tablet": "32px",
+                      "sm": "12px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "label-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .zebra-stripe:nth-child(even) {
+            background-color: #eff4ff;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col lg:flex-row">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 py-lg bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline w-64 z-50">
+<div class="px-6 mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Spartan Legion</h1>
+<p class="font-label-md text-on-surface-variant">Attendance Tracker</p>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined mr-3">qr_code_scanner</span>
+<span class="font-label-lg text-label-lg">Scan Attendance</span>
+</a>
+<a class="bg-secondary-container text-on-secondary-container border-2 border-secondary rounded-xl flex items-center px-4 py-3 active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-label-lg text-label-lg">Live Dashboard</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined mr-3">groups</span>
+<span class="font-label-lg text-label-lg">Roster</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined mr-3">history</span>
+<span class="font-label-lg text-label-lg">History</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined mr-3">assessment</span>
+<span class="font-label-lg text-label-lg">Reports</span>
+</a>
+</nav>
+<div class="px-6 py-4 mt-auto">
+<div class="flex items-center gap-3">
+<img alt="Spartan Legion Logo" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgPW1p3hJXjlMQnP5DWVky95VGG0_inGHoSlcVNeJ8YjbThjaQgXTgwSQnAImfEon0wpfHzKFJBaygdZe9yUAbOxFxdmKUmvh5jtoEHXjfbZ9nSgEGTf3XeItjKYhYeUvEAf2XlyFML8ZXh9x31_hkwjtjNRENcNy03uFNTc5cHk-3InZVkf2lPDDsITQ4KQgg7pKKbKfZ2G8tt8srbTykxcgMIHaQDFjimB4PY1e3JNWfQM-SjDTYpgr5eHVw5PK835_zJc_Sg5z8"/>
+<div>
+<p class="font-label-lg text-label-lg">Section Leader</p>
+<p class="text-xs text-on-surface-variant">Admin Access</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar (Mobile/Tablet) -->
+<header class="lg:hidden flex justify-between items-center w-full px-margin-tablet py-sm sticky top-0 z-50 bg-surface border-b border-outline-variant">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Spartan Legion</h1>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 p-margin-mobile md:p-margin-tablet pb-32 lg:pb-margin-tablet max-w-[1280px]">
+<!-- Dashboard Header & Global Progress -->
+<div class="mb-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-1">Live Dashboard</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Afternoon Field Rehearsal • Oct 24, 2023</p>
+</div>
+<div class="flex gap-2"><button class="bg-primary text-white px-4 py-2 font-label-lg rounded-xl flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors active:scale-95" onclick="document.getElementById('rehearsal-modal').classList.remove('hidden')"><span class="material-symbols-outlined">event</span> Schedule Rehearsal</button>
+<button class="bg-white border-2 border-primary text-primary px-4 py-2 font-label-lg rounded-xl flex items-center gap-2 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">filter_list</span> Filter
+                    </button>
+<button class="bg-primary text-white px-4 py-2 font-label-lg rounded-xl flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined">refresh</span> Sync
+                    </button>
+</div>
+</div>
+<!-- Global Attendance Bar -->
+<div class="bg-surface-container rounded-xl p-md border border-outline-variant">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-lg text-label-lg text-on-surface">Overall Attendance Rate</span>
+<span class="font-headline-md text-headline-md text-primary">82.4%</span>
+</div>
+<div class="w-full bg-outline-variant h-4 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[82.4%] rounded-full relative transition-all duration-1000">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
+</div>
+</div>
+<div class="flex justify-between mt-2 text-xs font-label-md text-on-surface-variant">
+<span>Target: 95.0%</span>
+<span>230 / 279 Members Scanned</span>
+</div>
+</div>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-gutter mb-lg">
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="text-on-surface-variant font-label-lg">Total Members</span>
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+<div class="font-headline-xl text-headline-xl">279</div>
+<div class="text-xs text-on-surface-variant mt-2 font-label-md">Full Roster Count</div>
+</div>
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="text-on-surface-variant font-label-lg">Total Present</span>
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="font-headline-xl text-headline-xl text-surface-tint">214</div>
+<div class="text-xs text-on-surface-variant mt-2 font-label-md">+5 in last 10 min</div>
+</div>
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="text-on-surface-variant font-label-lg">Total Late</span>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+<div class="font-headline-xl text-headline-xl text-secondary">16</div>
+<div class="text-xs text-on-surface-variant mt-2 font-label-md">Excused: 4</div>
+</div>
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="text-on-surface-variant font-label-lg">Absent</span>
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">cancel</span>
+</div>
+<div class="font-headline-xl text-headline-xl text-error">49</div>
+<div class="text-xs text-on-surface-variant mt-2 font-label-md">Unconfirmed status</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Section Breakdown (Bento Style) -->
+<div class="lg:col-span-2 space-y-gutter">
+<div class="bg-white rounded-xl border border-outline-variant overflow-hidden">
+<div class="bg-primary px-md py-3 flex justify-between items-center">
+<h3 class="text-white font-label-lg uppercase tracking-widest">Section Breakdown</h3>
+<span class="material-symbols-outlined text-white">leaderboard</span>
+</div>
+<div class="p-md space-y-6">
+<!-- Trumpets -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-lg text-primary">Trumpets</span>
+<span class="font-label-md text-on-surface-variant">38 / 42 (90%)</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-surface-tint h-full w-[90%] rounded-full"></div>
+</div>
+</div>
+<!-- Percussion -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-lg text-primary">Percussion</span>
+<span class="font-label-md text-on-surface-variant">45 / 55 (81%)</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[81%] rounded-full"></div>
+</div>
+</div>
+<!-- Flags -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-lg text-primary">Flags</span>
+<span class="font-label-md text-on-surface-variant">28 / 32 (87%)</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-surface-tint h-full w-[87%] rounded-full"></div>
+</div>
+</div>
+<!-- Trombones -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-lg text-primary">Trombones</span>
+<span class="font-label-md text-on-surface-variant">15 / 25 (60%)</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full w-[60%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity / Scan Log -->
+<div class="bg-white rounded-xl border border-outline-variant">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-primary">Recent Check-ins</h3>
+<a class="text-surface-tint font-label-md hover:underline" href="#">View All</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-md py-3 font-label-lg text-on-surface-variant">Member Name</th>
+<th class="px-md py-3 font-label-lg text-on-surface-variant">Section</th>
+<th class="px-md py-3 font-label-lg text-on-surface-variant">Time</th>
+<th class="px-md py-3 font-label-lg text-on-surface-variant">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="zebra-stripe">
+<td class="px-md py-4 font-body-md font-semibold">Jackson, Marcus</td>
+<td class="px-md py-4 text-on-surface-variant">Trumpets</td>
+<td class="px-md py-4 text-on-surface-variant">3:42 PM</td>
+<td class="px-md py-4"><span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold uppercase">Present</span></td>
+</tr>
+<tr class="zebra-stripe">
+<td class="px-md py-4 font-body-md font-semibold">Smith, Elena</td>
+<td class="px-md py-4 text-on-surface-variant">Percussion</td>
+<td class="px-md py-4 text-on-surface-variant">3:41 PM</td>
+<td class="px-md py-4"><span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold uppercase">Present</span></td>
+</tr>
+<tr class="zebra-stripe">
+<td class="px-md py-4 font-body-md font-semibold">Williams, Tyrell</td>
+<td class="px-md py-4 text-on-surface-variant">Trombones</td>
+<td class="px-md py-4 text-on-surface-variant">3:38 PM</td>
+<td class="px-md py-4"><span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold uppercase">Late</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Exception Lists (Side Panels) -->
+<div class="space-y-gutter">
+<!-- Not Yet Scanned -->
+<div class="bg-white rounded-xl border border-outline-variant flex flex-col max-h-[500px]">
+<div class="p-md bg-surface-container-highest flex justify-between items-center sticky top-0">
+<h3 class="font-label-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">error</span>
+                            NOT YET SCANNED (49)
+                        </h3>
+</div>
+<div class="flex-1 overflow-y-auto scrollbar-hide p-md space-y-4">
+<div class="flex items-center justify-between group">
+<div>
+<p class="font-label-lg text-on-surface">Adams, Benjamin</p>
+<p class="text-xs text-on-surface-variant">Baritones</p>
+</div>
+<button class="bg-surface-container hover:bg-primary hover:text-white p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+<div class="flex items-center justify-between group">
+<div>
+<p class="font-label-lg text-on-surface">Foster, Clarice</p>
+<p class="text-xs text-on-surface-variant">Clarinet</p>
+</div>
+<button class="bg-surface-container hover:bg-primary hover:text-white p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+<div class="flex items-center justify-between group">
+<div>
+<p class="font-label-lg text-on-surface">Grant, Xavier</p>
+<p class="text-xs text-on-surface-variant">Percussion</p>
+</div>
+<button class="bg-surface-container hover:bg-primary hover:text-white p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+<div class="flex items-center justify-between group">
+<div>
+<p class="font-label-lg text-on-surface">Henderson, Maya</p>
+<p class="text-xs text-on-surface-variant">Flags</p>
+</div>
+<button class="bg-surface-container hover:bg-primary hover:text-white p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+</div>
+<div class="p-md border-t border-outline-variant">
+<button class="w-full py-2 bg-surface-container-high rounded-xl text-primary font-label-lg hover:bg-surface-variant transition-colors">Notify All Missing</button>
+</div>
+</div>
+<!-- Late Students Details -->
+<div class="bg-white rounded-xl border border-outline-variant p-md">
+<h3 class="font-label-lg text-secondary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+                        RECENT LATE ARRIVALS
+                    </h3>
+<div class="space-y-3">
+<div class="flex items-center gap-3 p-2 bg-surface-container-low rounded-lg">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<div class="flex-1">
+<p class="font-label-md">Dixon, Robert</p>
+<p class="text-[10px] text-on-surface-variant">Arrived 3:35 PM (15m late)</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chat_bubble</span>
+</div>
+<div class="flex items-center gap-3 p-2 bg-surface-container-low rounded-lg">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<div class="flex-1">
+<p class="font-label-md">Lewis, Sarah</p>
+<p class="text-[10px] text-on-surface-variant">Arrived 3:30 PM (10m late)</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chat_bubble</span>
+</div>
+</div>
+</div>
+<!-- Section Comparison Small Card -->
+<div class="bg-surface-container-high rounded-xl p-md border border-outline-variant overflow-hidden relative group">
+<div class="relative z-10">
+<h4 class="font-label-lg text-primary">Highest Discipline</h4>
+<p class="font-headline-md text-primary">Trumpets</p>
+<p class="text-xs text-on-surface-variant">4 consecutive days with 100% on-time attendance.</p>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-7xl text-primary opacity-5 transform rotate-12 transition-transform group-hover:scale-110">military_tech</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile pb-safe h-20 bg-surface border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-label-md text-label-md">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full p-2 w-16 h-12 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Live</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-label-md">Roster</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+</nav>
+<!-- FAB (Floating Action Button) - Contextual for Scan -->
+<button class="fixed bottom-24 right-6 lg:bottom-10 lg:right-10 w-16 h-16 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group z-40">
+<span class="material-symbols-outlined text-3xl">qr_code_scanner</span>
+<span class="absolute right-full mr-3 bg-inverse-surface text-inverse-on-surface px-3 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Fast Scan</span>
+</button>
+<script>
+        // Simple interactive micro-effect: simulated real-time counter updates
+        function simulateUpdates() {
+            const metrics = [
+                { id: 'present-count', min: 210, max: 230 },
+                { id: 'absent-count', min: 40, max: 50 }
+            ];
+            
+            // This is just a UI flare to show real-time "live" aspect
+            const rate = document.querySelector('.font-headline-md.text-primary');
+            if (rate && Math.random() > 0.7) {
+                let current = parseFloat(rate.innerText);
+                let next = (current + (Math.random() * 0.2 - 0.1)).toFixed(1);
+                rate.innerText = next + '%';
+            }
+        }
+
+        setInterval(simulateUpdates, 5000);
+
+        // Quick Search Interaction
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && e.ctrlKey) {
+                alert('Search triggered. Search functionality would be initialized here.');
+            }
+        });
+    </script>
+<!-- Rehearsal Modal -->
+<div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4" id="rehearsal-modal">
+<div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="document.getElementById('rehearsal-modal').classList.add('hidden')"></div>
+<div class="relative bg-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+<div class="px-md py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-headline-md text-primary">Schedule New Rehearsal</h3>
+<button class="p-1 hover:bg-surface-variant rounded-full transition-colors" onclick="document.getElementById('rehearsal-modal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-md space-y-4">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Rehearsal Title</label>
+<input class="w-full border-outline-variant rounded-lg focus:border-primary focus:ring-primary font-body-md" placeholder="e.g., Full Band Field Rehearsal" type="text"/>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Date</label>
+<input class="w-full border-outline-variant rounded-lg focus:border-primary focus:ring-primary font-body-md" type="date"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Start Time</label>
+<input class="w-full border-outline-variant rounded-lg focus:border-primary focus:ring-primary font-body-md" type="time"/>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">End Time</label>
+<input class="w-full border-outline-variant rounded-lg focus:border-primary focus:ring-primary font-body-md" type="time"/>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Rehearsal Type</label>
+<select class="w-full border-outline-variant rounded-lg focus:border-primary focus:ring-primary font-body-md">
+<option>Field Rehearsal</option>
+<option>Sectionals</option>
+<option>Game Day</option>
+<option>Special Event</option>
+</select>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Location</label>
+<input class="w-full border-outline-variant rounded-lg focus:border-primary focus:ring-primary font-body-md" placeholder="e.g., Stadium South Lot" type="text"/>
+</div>
+</div>
+<div class="p-md border-t border-outline-variant flex gap-3 justify-end bg-surface-container-lowest">
+<button class="px-6 py-2 rounded-xl border border-outline font-label-lg hover:bg-surface-variant transition-colors" onclick="document.getElementById('rehearsal-modal').classList.add('hidden')">Cancel</button>
+<button class="px-6 py-2 rounded-xl bg-primary text-white font-label-lg hover:bg-on-primary-fixed-variant transition-colors">Schedule Rehearsal</button>
+</div>
+</div>
+</div></body></html>
