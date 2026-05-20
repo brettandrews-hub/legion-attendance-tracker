@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scan Attendance - Spartan Legion</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#454747",
+                        "surface-tint": "#326858",
+                        "outline-variant": "#c0c9c3",
+                        "tertiary": "#212323",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "error-container": "#ffdad6",
+                        "outline": "#707975",
+                        "on-surface": "#0b1c30",
+                        "primary-container": "#004032",
+                        "secondary-container": "#feb71a",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-high": "#dce9ff",
+                        "tertiary-container": "#363838",
+                        "surface-container-low": "#eff4ff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#6b4b00",
+                        "primary-fixed-dim": "#9ad2be",
+                        "on-primary-fixed": "#002018",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#a0a1a1",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary-container": "#76ac99",
+                        "inverse-surface": "#213145",
+                        "on-error": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "inverse-primary": "#9ad2be",
+                        "on-secondary-fixed": "#271900",
+                        "background": "#f8f9ff",
+                        "secondary-fixed-dim": "#ffba2c",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#404945",
+                        "inverse-on-surface": "#eaf1ff",
+                        "secondary": "#7d5700",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#5f4100",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#00281e",
+                        "primary-fixed": "#b6eeda",
+                        "secondary-fixed": "#ffdeaa",
+                        "surface-container": "#e5eeff",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#175041"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "lg": "40px",
+                        "md": "24px",
+                        "xl": "64px",
+                        "margin-tablet": "32px",
+                        "sm": "12px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanner-frame::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px solid rgba(255, 184, 28, 0.5);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+        .scan-line {
+            position: absolute;
+            width: calc(100% - 40px);
+            height: 2px;
+            background: #feb71a;
+            left: 20px;
+            top: 20px;
+            animation: scan 3s linear infinite;
+            box-shadow: 0 0 15px #feb71a;
+        }
+        .laser-scan {
+            background: #4ade80 !important;
+            box-shadow: 0 0 20px #4ade80 !important;
+            animation-duration: 1.5s !important;
+        }
+        @keyframes scan {
+            0% { top: 20px; }
+            50% { top: calc(100% - 22px); }
+            100% { top: 20px; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- Top AppBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center w-full px-margin-tablet py-sm sticky top-0 z-50">
+<div class="flex items-center gap-base">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">Spartan Legion</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary">notifications</span>
+</button>
+<button class="hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary">account_circle</span>
+</button>
+</div>
+</header>
+<div class="flex">
+<!-- Side Navigation Bar -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 py-lg bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline w-64 pt-24">
+<nav class="flex flex-col gap-xs px-sm">
+<a class="bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary border-2 border-secondary rounded-xl flex items-center px-4 py-3 gap-md active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-lg text-label-lg">Scan Attendance</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container flex items-center px-4 py-3 gap-md hover:bg-surface-variant dark:hover:bg-on-tertiary-fixed-variant rounded-xl active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">Live Dashboard</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container flex items-center px-4 py-3 gap-md hover:bg-surface-variant dark:hover:bg-on-tertiary-fixed-variant rounded-xl active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-lg text-label-lg">Roster</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container flex items-center px-4 py-3 gap-md hover:bg-surface-variant dark:hover:bg-on-tertiary-fixed-variant rounded-xl active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-lg text-label-lg">History</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-tertiary-container flex items-center px-4 py-3 gap-md hover:bg-surface-variant dark:hover:bg-on-tertiary-fixed-variant rounded-xl active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="font-label-lg text-label-lg">Reports</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-64 w-full p-margin-tablet pb-32">
+<!-- Stats Bar -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-lg">
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md">Total Present</p>
+<h2 class="font-headline-md text-headline-md text-primary" id="stat-present">184 <span class="text-label-md font-normal text-on-surface-variant">/ 250</span></h2>
+</div>
+<span class="material-symbols-outlined text-surface-tint" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md">Absent / Late</p>
+<h2 class="font-headline-md text-headline-md text-error" id="stat-absent">66</h2>
+</div>
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md">Current Time</p>
+<h2 class="font-headline-md text-headline-md text-on-surface" id="current-clock">11:56:38</h2>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+</div>
+<div class="bg-primary-container text-on-primary-container p-md rounded-xl flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md opacity-80">Late Cutoff</p>
+<h2 class="font-headline-md text-headline-md">16:00</h2>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-label-md font-bold">18m left</span>
+<div class="w-16 h-1.5 bg-on-primary-container/20 rounded-full mt-1">
+<div class="w-2/3 h-full bg-secondary-container rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Scanner & Side Panel Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+<!-- Left: Scanner Controls & View -->
+<div class="xl:col-span-8 flex flex-col gap-md">
+<!-- Preview Area -->
+<div class="relative bg-black rounded-xl overflow-hidden shadow-2xl scanner-frame group aspect-[1.58/1]">
+<img class="w-full h-full object-cover opacity-60 mix-blend-screen" data-alt="A dark, high-tech control room environment with multiple glowing green digital screens reflecting on a dark metallic surface. Centered in the view is a large digital scanning frame with a yellow laser line moving vertically across a data stream. The lighting is low-key with intense neon yellow and deep emerald green accents, conveying a sense of precision and advanced military-grade technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsA4Q1QBfm1FG7VAvVwgNahBK5IVi6qVo4fCfvNSUExPo-GRmn85er09D_yNNotHgOk2yHWhdSz6S5WOvumgwT59I7VEKI2r3GU_3jvcko_-8uE8xCdcaD4gCMNcl_ofLMQNxMZgme3VyfwIKwb01X0Jgjn4RZjKQYls4P2HYqipKb6gTvHPg_SNcUkf2CdJwZGIcCTN1onXf4qI2llWbz-RQfjtcJltSNFXmJ3q7_AQElf67_mMhMJDRtt-IgHP9kpXKLJmYJioMW"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+<div class="scan-line" id="scanner-beam"></div>
+<div class="text-secondary-container font-headline-md mb-2 flex items-center gap-sm">
+<span class="material-symbols-outlined text-[48px]">center_focus_strong</span>
+</div>
+<p class="text-white font-label-lg bg-black/40 px-md py-xs rounded-full">Align QR Code within Frame</p>
+</div>
+<!-- Overlay Status -->
+<div class="absolute inset-0 bg-primary-container/20 border-4 border-primary transition-opacity opacity-0 flex items-center justify-center pointer-events-none" id="scan-status-overlay">
+<div class="bg-white/95 backdrop-blur p-lg rounded-2xl shadow-[0_0_50px_rgba(0,64,50,0.3)] flex flex-col items-center border-2 border-primary animate-in zoom-in duration-300">
+<div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-white text-[48px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<p class="text-primary font-bold text-headline-md tracking-widest">VALID SPARTANCARD</p>
+<p class="text-on-surface-variant font-mono mt-2" id="overlay-id">ID: 00059950132</p>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-2 gap-md">
+<button class="bg-[#004032] text-white h-16 rounded-xl font-headline-md flex items-center justify-center gap-md hover:brightness-110 active:scale-95 transition-all shadow-lg" id="start-btn">
+<span class="material-symbols-outlined text-[32px]">play_arrow</span>
+                            START SCAN
+                        </button>
+<button class="bg-error text-white h-16 rounded-xl font-headline-md flex items-center justify-center gap-md hover:brightness-110 active:scale-95 transition-all shadow-lg" id="stop-btn">
+<span class="material-symbols-outlined text-[32px]">stop</span>
+                            STOP SCAN
+                        </button>
+</div>
+<button class="w-full bg-primary text-white h-16 rounded-xl font-headline-md flex items-center justify-center gap-md hover:brightness-110 active:scale-95 transition-all shadow-lg mb-xs" id="scan-new-card-btn">
+<span class="material-symbols-outlined text-[32px]">qr_code_scanner</span>
+    SCAN NEW CARD
+</button>
+<button class="w-full border-2 border-primary text-primary h-14 rounded-xl font-label-lg flex items-center justify-center gap-md hover:bg-primary-container/5 transition-colors">
+<span class="material-symbols-outlined">search</span>
+                        MANUAL STUDENT SEARCH (F2)
+                    </button>
+</div>
+<!-- Right: Last Scanned Info -->
+<div class="xl:col-span-4 flex flex-col gap-md">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col h-full shadow-sm">
+<div class="bg-surface-container p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface">Last Scanned</h3>
+<span class="bg-surface-tint text-white px-sm py-xs rounded-full text-label-md" id="last-scan-time">15:41:02</span>
+</div>
+<div class="p-lg flex flex-col items-center text-center">
+<div class="relative mb-md">
+<img alt="Student" class="w-32 h-32 rounded-full object-cover border-4 border-primary shadow-lg" data-alt="Close up portrait of a young African American man wearing a crisp white collared shirt, smiling confidently against a soft-focus campus background. The lighting is warm and natural, suggesting a bright morning. The image has high contrast and sharp detail, emphasizing professional and disciplined character consistent with the Norfolk State University Spartan Legion brand." id="student-photo" src="https://lh3.googleusercontent.com/aida/ADBb0uiCoOG5BingL-SzryYi1FlsGnbLGcAkXrigim2f5NsFjhwNs8gmG6sidQ1O7yEXcEcp63VxyUxA35gDDx2StrCHyfZm2jG1x-DL3qmic6FmoW7X6oFg605bDes5dkIh7ElxUf0IQCkhxjmje3k1qk56O8jN3XZbIY11Jf8EWufaB9cltnzs3fGU2nue6eBqjcdO33bxYZMBuReaLzuLXYfGngnyGh6gwYuOnnHCLobvhQLhrToDCZ2Y0EGpjBH46_mK7PWU5T-avOA"/>
+<div class="absolute bottom-0 right-0 bg-primary text-white p-1 rounded-full border-2 border-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface" id="student-name">BRETT D ANDREWS</h4>
+<p class="text-primary font-mono text-label-md mt-1 font-bold" id="student-id">ID: 00059950132</p>
+<p class="text-on-surface-variant font-body-md mb-md" id="student-meta">Sophomore • Section Leader</p>
+<div class="w-full grid grid-cols-2 gap-sm mb-lg">
+<div class="bg-surface-container-low p-sm rounded-lg border border-outline-variant/30">
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider">Instrument</p>
+<p class="font-label-lg text-primary" id="student-instrument">Trumpet</p>
+</div>
+<div class="bg-surface-container-low p-sm rounded-lg border border-outline-variant/30">
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider">Section</p>
+<p class="font-label-lg text-primary" id="student-section">High Brass</p>
+</div>
+</div>
+<!-- Dynamic Status Indicators -->
+<div class="w-full flex flex-col gap-sm" id="status-container">
+<div class="flex items-center gap-md p-md bg-primary-container/10 border-l-4 border-primary rounded-r-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div class="text-left">
+<p class="font-label-lg text-primary uppercase">PRESENT</p>
+<p class="text-label-md text-on-surface-variant">Confirmed at main gate</p>
+</div>
+</div>
+<div class="flex items-center gap-md p-md opacity-30 grayscale pointer-events-none">
+<span class="material-symbols-outlined text-secondary">info</span>
+<div class="text-left">
+<p class="font-label-lg">ALREADY CHECKED IN</p>
+<p class="text-label-md">Scanned at 14:30</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto p-md bg-surface-container border-t border-outline-variant">
+<div class="flex items-center justify-between text-on-surface-variant font-label-md mb-sm">
+<span class="">Session Log (Last 3)</span>
+<a class="text-primary font-bold" href="#">View All</a>
+</div>
+<div class="space-y-sm" id="session-log">
+<div class="flex items-center justify-between bg-surface-container-lowest p-xs px-sm rounded border border-outline-variant/50">
+<span class="text-label-md log-name">B. Andrews</span>
+<span class="text-label-md text-on-surface-variant log-time">15:42</span>
+<span class="text-primary text-xs font-bold">OK</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container-lowest p-xs px-sm rounded border border-outline-variant/50">
+<span class="text-label-md log-name">D. Rivers</span>
+<span class="text-label-md text-on-surface-variant log-time">15:38</span>
+<span class="text-primary text-xs font-bold">OK</span>
+</div>
+<div class="flex items-center justify-between bg-error-container p-xs px-sm rounded border border-error/20">
+<span class="text-label-md font-bold text-on-error-container log-name">Unknown ID</span>
+<span class="text-label-md text-on-error-container/70 log-time">15:35</span>
+<span class="text-error text-xs font-bold">ERR</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Bottom Navigation (Hidden on Tablet/Desktop) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile pb-safe h-20 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline">
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full p-2 w-16 h-12 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-label-md text-label-md">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container p-2 hover:bg-surface-container-high active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Live</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container p-2 hover:bg-surface-container-high active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-label-md">Roster</span>
+</a>
+</nav>
+<script>
+        // Clock functionality
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-GB', { hour12: false });
+            document.getElementById('current-clock').textContent = timeString;
+            return timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Elements
+        const startBtn = document.getElementById('start-btn');
+        const overlay = document.getElementById('scan-status-overlay');
+        const scanNewBtn = document.getElementById('scan-new-card-btn');
+        const scannerBeam = document.getElementById('scanner-beam');
+        const overlayId = document.getElementById('overlay-id');
+        
+        // Sidebar elements
+        const studentPhoto = document.getElementById('student-photo');
+        const studentName = document.getElementById('student-name');
+        const studentId = document.getElementById('student-id');
+        const studentMeta = document.getElementById('student-meta');
+        const studentInstrument = document.getElementById('student-instrument');
+        const studentSection = document.getElementById('student-section');
+        const lastScanTime = document.getElementById('last-scan-time');
+        const sessionLog = document.getElementById('session-log');
+        const statPresent = document.getElementById('stat-present');
+        const statAbsent = document.getElementById('stat-absent');
+
+        let presentCount = 184;
+        let absentCount = 66;
+
+        function simulateScan() {
+            // UI Feedback
+            scanNewBtn.disabled = true;
+            scanNewBtn.classList.add('opacity-50');
+            scannerBeam.classList.add('laser-scan');
+            
+            setTimeout(() => {
+                const currentTime = updateClock();
+                
+                // Update Student Data
+                studentPhoto.src = 'https://lh3.googleusercontent.com/aida/ADBb0ugdOrGyh-9ewjXIZ6cOpYj06VmiDSOga5J-unhNhZIRk2oklLdqK_rdoMnNrIKMmZvgUobW_Bpf7AATdN5kqZnev8Fxrv74lmPEZK1QJGB6zAamkvuM-r0zJ5g2y6Mlk4SPHjURYaWXqjH_Yckh1gas8wJYU-bWE5K8oDQan1fAAADVcfslnPDInFGCktTj57cTbHlt1tWhlbyvAThgX8mnOwrbNjAIiVGK9pluwEbN6GREdPuVoNwVBW2z';
+                studentName.textContent = 'TANYA JENKINS';
+                studentId.textContent = 'ID: 00059950134';
+                studentMeta.textContent = 'Junior • Member';
+                studentInstrument.textContent = 'Flute';
+                studentSection.textContent = 'Woodwinds';
+                lastScanTime.textContent = currentTime;
+                overlayId.textContent = 'ID: 00059950134';
+
+                // Update Stats
+                presentCount++;
+                absentCount--;
+                statPresent.innerHTML = `${presentCount} <span class="text-label-md font-normal text-on-surface-variant">/ 250</span>`;
+                statAbsent.textContent = absentCount;
+
+                // Show Success Overlay
+                overlay.style.opacity = '1';
+                
+                // Add to Session Log
+                const logEntry = document.createElement('div');
+                logEntry.className = 'flex items-center justify-between bg-surface-container-lowest p-xs px-sm rounded border border-outline-variant/50 animate-in slide-in-from-right duration-300';
+                logEntry.innerHTML = `
+                    <span class="text-label-md">T. Jenkins</span>
+                    <span class="text-label-md text-on-surface-variant">${currentTime.substring(0,5)}</span>
+                    <span class="text-primary text-xs font-bold">OK</span>
+                `;
+                sessionLog.insertBefore(logEntry, sessionLog.firstChild);
+                if(sessionLog.children.length > 3) {
+                    sessionLog.lastElementChild.remove();
+                }
+
+                // Reset after simulation
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    scannerBeam.classList.remove('laser-scan');
+                    scanNewBtn.disabled = false;
+                    scanNewBtn.classList.remove('opacity-50');
+                }, 1500);
+
+            }, 1500);
+        }
+
+        scanNewBtn.addEventListener('click', simulateScan);
+
+        startBtn.addEventListener('click', () => {
+            startBtn.classList.add('opacity-50', 'pointer-events-none');
+            startBtn.textContent = 'SCANNING...';
+            
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    startBtn.classList.remove('opacity-50', 'pointer-events-none');
+                    startBtn.innerHTML = '<span class="material-symbols-outlined text-[32px]">play_arrow</span> START SCAN';
+                }, 1500);
+            }, 2000);
+        });
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+    </script>
+</body></html>
