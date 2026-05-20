@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
           darkMode: "class",
@@ -23,14 +22,14 @@
                       "outline": "#707975",
                       "on-surface": "#0b1c30",
                       "primary-container": "#004032",
-                      "secondary-container": "#feb71a",
+                      "secondary-container": "#FFB81C",
                       "tertiary-fixed-dim": "#c6c6c7",
                       "surface-bright": "#f8f9ff",
                       "surface-container-high": "#dce9ff",
                       "tertiary-container": "#363838",
                       "surface-container-low": "#eff4ff",
                       "on-error-container": "#93000a",
-                      "on-secondary-container": "#6b4b00",
+                      "on-secondary-container": "#271900",
                       "primary-fixed-dim": "#9ad2be",
                       "on-primary-fixed": "#002018",
                       "surface-dim": "#cbdbf5",
@@ -55,7 +54,7 @@
                       "on-primary": "#ffffff",
                       "surface-container-highest": "#d3e4fe",
                       "on-tertiary": "#ffffff",
-                      "primary": "#00281e",
+                      "primary": "#004032",
                       "primary-fixed": "#b6eeda",
                       "secondary-fixed": "#ffdeaa",
                       "surface-container": "#e5eeff",
@@ -122,23 +121,23 @@
 <p class="font-label-md text-on-surface-variant">Attendance Tracker</p>
 </div>
 <nav class="flex-1 px-4 space-y-2">
-<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="#">
-<span class="material-symbols-outlined mr-3">qr_code_scanner</span>
-<span class="font-label-lg text-label-lg">Scan Attendance</span>
-</a>
-<a class="bg-secondary-container text-on-secondary-container border-2 border-secondary rounded-xl flex items-center px-4 py-3 active:translate-x-1 transition-transform" href="#">
+<a class="bg-secondary-container text-on-secondary-container border-2 border-secondary/20 rounded-xl flex items-center px-4 py-3 active:translate-x-1 transition-transform" href="index.html">
 <span class="material-symbols-outlined mr-3">dashboard</span>
 <span class="font-label-lg text-label-lg">Live Dashboard</span>
 </a>
-<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="#">
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="scanner.html">
+<span class="material-symbols-outlined mr-3">qr_code_scanner</span>
+<span class="font-label-lg text-label-lg">Scan Attendance</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="roster.html">
 <span class="material-symbols-outlined mr-3">groups</span>
 <span class="font-label-lg text-label-lg">Roster</span>
 </a>
-<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="#">
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="history.html">
 <span class="material-symbols-outlined mr-3">history</span>
 <span class="font-label-lg text-label-lg">History</span>
 </a>
-<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="#">
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-variant transition-colors rounded-xl group active:translate-x-1 transition-transform" href="reports.html">
 <span class="material-symbols-outlined mr-3">assessment</span>
 <span class="font-label-lg text-label-lg">Reports</span>
 </a>
@@ -170,13 +169,16 @@
 <h2 class="font-headline-lg text-headline-lg text-primary mb-1">Live Dashboard</h2>
 <p class="font-body-md text-body-md text-on-surface-variant">Afternoon Field Rehearsal • Oct 24, 2023</p>
 </div>
-<div class="flex gap-2"><button class="bg-primary text-white px-4 py-2 font-label-lg rounded-xl flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors active:scale-95" onclick="document.getElementById('rehearsal-modal').classList.remove('hidden')"><span class="material-symbols-outlined">event</span> Schedule Rehearsal</button>
+<div class="flex gap-2">
+<button class="bg-primary text-white px-4 py-2 font-label-lg rounded-xl flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors active:scale-95" onclick="document.getElementById('rehearsal-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined">event</span> Schedule Rehearsal
+                </button>
 <button class="bg-white border-2 border-primary text-primary px-4 py-2 font-label-lg rounded-xl flex items-center gap-2 hover:bg-surface-container-high transition-colors">
 <span class="material-symbols-outlined">filter_list</span> Filter
-                    </button>
+                </button>
 <button class="bg-primary text-white px-4 py-2 font-label-lg rounded-xl flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-colors active:scale-95">
 <span class="material-symbols-outlined">refresh</span> Sync
-                    </button>
+                </button>
 </div>
 </div>
 <!-- Global Attendance Bar -->
@@ -247,7 +249,7 @@
 <span class="font-label-md text-on-surface-variant">38 / 42 (90%)</span>
 </div>
 <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-surface-tint h-full w-[90%] rounded-full"></div>
+<div class="bg-primary h-full w-[90%] rounded-full"></div>
 </div>
 </div>
 <!-- Percussion -->
@@ -267,7 +269,7 @@
 <span class="font-label-md text-on-surface-variant">28 / 32 (87%)</span>
 </div>
 <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-surface-tint h-full w-[87%] rounded-full"></div>
+<div class="bg-primary h-full w-[87%] rounded-full"></div>
 </div>
 </div>
 <!-- Trombones -->
@@ -286,7 +288,7 @@
 <div class="bg-white rounded-xl border border-outline-variant">
 <div class="p-md border-b border-outline-variant flex justify-between items-center">
 <h3 class="font-headline-md text-primary">Recent Check-ins</h3>
-<a class="text-surface-tint font-label-md hover:underline" href="#">View All</a>
+<a class="text-primary font-label-md hover:underline" href="history.html">View All</a>
 </div>
 <div class="overflow-x-auto">
 <table class="w-full text-left">
@@ -329,8 +331,8 @@
 <div class="p-md bg-surface-container-highest flex justify-between items-center sticky top-0">
 <h3 class="font-label-lg text-primary flex items-center gap-2">
 <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">error</span>
-                            NOT YET SCANNED (49)
-                        </h3>
+                        NOT YET SCANNED (49)
+                    </h3>
 </div>
 <div class="flex-1 overflow-y-auto scrollbar-hide p-md space-y-4">
 <div class="flex items-center justify-between group">
@@ -378,8 +380,8 @@
 <div class="bg-white rounded-xl border border-outline-variant p-md">
 <h3 class="font-label-lg text-secondary mb-4 flex items-center gap-2">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
-                        RECENT LATE ARRIVALS
-                    </h3>
+                    RECENT LATE ARRIVALS
+                </h3>
 <div class="space-y-3">
 <div class="flex items-center gap-3 p-2 bg-surface-container-low rounded-lg">
 <span class="w-2 h-2 rounded-full bg-secondary"></span>
@@ -413,58 +415,32 @@
 </main>
 <!-- BottomNavBar (Mobile) -->
 <nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile pb-safe h-20 bg-surface border-t border-outline-variant">
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
-<span class="material-symbols-outlined">qr_code_scanner</span>
-<span class="font-label-md text-label-md">Scan</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full p-2 w-16 h-12 active:scale-90 transition-all" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="index.html">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
 <span class="font-label-md text-label-md">Live</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="scanner.html">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-label-md text-label-md">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="roster.html">
 <span class="material-symbols-outlined">groups</span>
 <span class="font-label-md text-label-md">Roster</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="history.html">
 <span class="material-symbols-outlined">history</span>
 <span class="font-label-md text-label-md">History</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="reports.html">
 <span class="material-symbols-outlined">assessment</span>
 <span class="font-label-md text-label-md">Reports</span>
 </a>
 </nav>
 <!-- FAB (Floating Action Button) - Contextual for Scan -->
-<button class="fixed bottom-24 right-6 lg:bottom-10 lg:right-10 w-16 h-16 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group z-40">
+<button class="fixed bottom-24 right-6 lg:bottom-10 lg:right-10 w-16 h-16 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group z-40" onclick="window.location.href='scanner.html'">
 <span class="material-symbols-outlined text-3xl">qr_code_scanner</span>
 <span class="absolute right-full mr-3 bg-inverse-surface text-inverse-on-surface px-3 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Fast Scan</span>
 </button>
-<script>
-        // Simple interactive micro-effect: simulated real-time counter updates
-        function simulateUpdates() {
-            const metrics = [
-                { id: 'present-count', min: 210, max: 230 },
-                { id: 'absent-count', min: 40, max: 50 }
-            ];
-            
-            // This is just a UI flare to show real-time "live" aspect
-            const rate = document.querySelector('.font-headline-md.text-primary');
-            if (rate && Math.random() > 0.7) {
-                let current = parseFloat(rate.innerText);
-                let next = (current + (Math.random() * 0.2 - 0.1)).toFixed(1);
-                rate.innerText = next + '%';
-            }
-        }
-
-        setInterval(simulateUpdates, 5000);
-
-        // Quick Search Interaction
-        document.addEventListener('keydown', (e) => {
-            if (e.key === '/' && e.ctrlKey) {
-                alert('Search triggered. Search functionality would be initialized here.');
-            }
-        });
-    </script>
 <!-- Rehearsal Modal -->
 <div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4" id="rehearsal-modal">
 <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="document.getElementById('rehearsal-modal').classList.add('hidden')"></div>
@@ -513,4 +489,16 @@
 <button class="px-6 py-2 rounded-xl bg-primary text-white font-label-lg hover:bg-on-primary-fixed-variant transition-colors">Schedule Rehearsal</button>
 </div>
 </div>
-</div></body></html>
+</div>
+<script>
+    function simulateUpdates() {
+        const rate = document.querySelector('.font-headline-md.text-primary');
+        if (rate && Math.random() > 0.7) {
+            let current = parseFloat(rate.innerText);
+            let next = (current + (Math.random() * 0.2 - 0.1)).toFixed(1);
+            rate.innerText = next + '%';
+        }
+    }
+    setInterval(simulateUpdates, 5000);
+</script>
+</body></html>
